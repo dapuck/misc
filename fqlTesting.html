@@ -1,0 +1,60 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>
+			FQL Testing
+		</title>
+		<script type="text/javascript">
+		function fbAsyncInit(){
+			FB.init({
+				appId:'623823954304429',
+				status:true,
+				xfbml: true
+			});
+		}
+		
+		function fbLogin() {
+			FB.login(function(response) {
+				if(!response.authResponse){
+					alert("Auth fail!");
+				}
+			},{scope:'user_birthday,friends_birthday,user_friends'});
+		}	
+		
+		function loadFB(d,s,id){
+			var js,fjs=d.getElementsByTagName(s)[0];
+			if(d.getElementById(id)){
+				return;
+			}
+			js=d.createElement(s);
+			js.id=id;
+			js.src="//connect.facebook.net/en_US/all.js";
+			fjs.parentNode.insertBefore(js,fjs);
+		}
+		
+		function runFQL() {
+			var fql = document.getElementById("fql").value;
+			FB.api('/fql','get',{q:fql},function(results) {
+				console.log(results);
+			});
+		}
+	</script>
+</head>
+<body>
+	<div id="fb-root">
+	</div>
+	<input type="button" value="Login to FB" onclick="fbLogin();">
+	<form>
+		FQL:<br>
+		<textarea name="fql" id="fql"></textarea><br>
+		<input type="button" id="run" value="Run" onClick="runFQL()"><br>
+		<pre id="results"></pre>
+	</form>
+	
+	<script type="text/javascript">
+	loadFB(document,'script','facebook-jssdk');
+	</script>
+</body>
+</html>
